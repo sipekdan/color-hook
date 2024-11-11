@@ -1,0 +1,196 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 20px;
+    transition: background-color 0.1s, color 0.1s;
+    overflow: hidden;
+}
+
+
+.color-box {
+    width: 200px;
+    height: 200px;
+    margin: 0px auto;
+    border: 1px solid #000;
+    position: relative;
+}
+@media only screen and (max-width: 767px) {
+    .color-box {
+        width: 200px;
+        height: 200px;
+        margin: 0px auto;
+        padding: 0px;
+        border: 1px solid #000;
+        position: relative;
+    }
+
+    .hintSection {
+        padding: -100px;
+    }
+
+}
+input[type="text"] {
+    padding: 5px;
+    width: 250px;
+}
+button {
+    display: inline-block;
+    padding: 7px 10px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+input[type="file"] {
+    margin: 10px;
+}
+
+#hintStyle {
+    font-size: 22px;
+    display: inline; 
+    margin: 0; 
+    vertical-align: middle;
+}
+
+
+@media only screen and (max-width: 767px) {
+    #closestColorsSection {
+        display: none;
+    }
+    #lengthOfModel {
+        display: none;
+    }
+
+    #closestColorsList {
+        display: none;
+    }
+    
+    #fixedDiv {
+        display: none;
+    }
+}
+
+#closestColorsSection {
+    position: fixed;
+    top: 40px;
+    left: 700px;
+}
+
+#closestColorsList {
+    list-style-type: none; /* Removes bullet points */
+    padding: 0; /* Removes extra left padding on the list */
+    margin-top: -25px; /* Removes any default margin */
+}
+
+#closestColorsList li {
+    padding-left: 30px; /* Adjust the padding to control alignment */
+    padding-top: 5px;
+    text-align: left; /* Ensures text alignment to the left */
+    display: flex; /* Use flex to align items consistently if necessary */
+    align-items: center; /* Vertically centers content within each list item */
+}
+
+#colorDescriptionBetter {
+    align-items: flex-start;
+}
+
+#colorDescription {
+    font-size: 17px;
+    /* position: absolute; */
+    position: fixed;
+    left: 50%;
+    top: 200px;
+    transform: translateX(-50%); 
+    color: black; 
+    text-align: center; 
+    padding: 5px; 
+    box-sizing: border-box; 
+}
+
+
+
+@media (max-width: 768px) { 
+    #colorDescription {
+        font-size: 17px;
+        /* position: absolute; */
+        position: relative;
+        left: 50%;
+        top: -60px;
+        transform: translateX(-50%); 
+        color: black; 
+        text-align: center; 
+        padding: 5px; 
+        box-sizing: border-box; 
+    }
+}
+
+
+h1 {
+    display: inline-block;
+    font-size: 24px;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+.mode-switch {
+    margin-left: 0;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 5px;
+    padding: 5px 10px; 
+    border: 1px solid #ccc; 
+    border-radius: 25%; 
+    text-align: center; 
+}
+
+
+.info-icon {
+    top: -3px;
+    left: 4px;
+    display: inline-block;
+    font-weight: bold;
+    color: #007bff;
+    font-family: Arial, sans-serif;
+    cursor: pointer;
+    position: relative;
+    padding: 5px 8px;
+    border: 1px solid #007bff;
+    border-radius: 25%;
+    background-color: #f0f8ff;
+    font-size: 18px;
+    line-height: 1;
+    text-align: center;
+    width: 16px;
+    height: 16px;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle; 
+}
+
+.info-icon .info-box {
+    display: none; 
+    position: absolute;
+    top: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f0f8ff;
+    color: #333;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    padding: 10px;
+    width: 330px;
+    font-size: 14px;
+    z-index: 10;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+.info-icon:hover {
+    background-color: #f0f4ff;
+}
+
+@media (max-width: 768px) {
+    .info-icon {
+        cursor: pointer;
+    }
+}

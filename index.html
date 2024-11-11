@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Color Training App</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h1>Color Naming and Model Training v1.1</h1>
+        <div class="info-icon" onclick="toggleInfoBox()"> i
+            <div class="info-box" style="cursor: default;">
+                <h3 style="margin-bottom: -10px; margin-top: 0px;">Info</h3>
+                <p>In the color box, you'll see a color, either randomly generated or submitted by you. In "Enter Color Name," type the color name and click "Submit" to train the model. You can skip the current color by clicking "Skip." The color suggestion list includes all CSS3 colors (148).</p>
+
+                <p>In "Submit Custom Color," you can enter a HEX value (e.g., #ABCDEF), an RGB value (e.g., rgb(171,205,239)), or a color name (the color needs to be in the model to be showen) for the model to recognize. This custom color will be appended based on the model's output.</p>
+                
+                <p>To the left, see more color details like CMYK, HLS, hue, and saturation. You can upload your own model by clicking "Upload Model." (The model must be in .csv format and must have a header in the first line: 'Red,Green,Blue,Name'). After uploading, you'll see on the right the closest matches according to the model, including during training. Alternatively, use the pre-generated model with 636,056 colors:</p> 
+                
+                <div style="display: flex; margin-left: 26px;">
+                    <input id="checkbox-use-model" type="checkbox" onclick="checkCheckbox()" style="margin-right: 5px; margin-bottom: -10px; vertical-align: bottom; position: relative; top: -6px; cursor: pointer;" />
+                    <label for="checkbox">Use pre-generated model (CSS3-S3)</label>
+                </div>
+                
+                <p>Uploaded models display colors predicted for the current input. "Download Model" downloads only your trained data (by your input), while "Download Full Model" includes both the uploaded model and your data.</p>
+                
+                <p>Here are some exceptions for colors:</p>
+                <ul>
+                <li>Fuchsia has the same color as Magenta.</li>
+                <li>Aqua has the same color code as Cyan.</li>
+                </ul>
+
+                <p>Mutation settings let you further customize color variations. "Number of Mutations" sets how many variations are created, "Min/Max Range" defines the mutation range, "Type" includes/excludes certain colors, "Strategy" defines mutation behavior, and "Randomness Factor" controls the degree of color change.</p>
+                
+                <p><strong>Shortcuts (Box color):</strong> - <code>Ctrl + R</code> to copy RGB, <code>Ctrl + H</code> to copy HEX</p>
+                
+                <hr>
+                <i style="display: block; margin-left: 200px;">D. Šípek</i>
+                <i style="display: block; margin-right: 250px; margin-top: -14px;">2024</i>
+            </div>
+        </div>
+        
+    <br>
+
+
+    <div>   
+        <div id="fixedDiv" style="position: fixed; left: calc(50% - 510px); top: 60px; z-index: 10; width: 400px">
+            <p id="colorDescriptionBetter" style="margin: 0px; padding-bottom: 0px; text-align: right; display: block;">
+            </p>
+        </div>
+
+        <div id="colorBox" class="color-box"></div>
+        <p id="colorDescription">
+            <span id="hexValue"></span> 
+            <span id="rgbValue"></span>
+        </p>
+    </div>
+    
+    <div id="closestColorsSection" style="left: calc(50% + 85px); display: none;">
+        <h3 id="lengthOfModel" style="padding-bottom: 5px;">Closest Matches (6)</h3>
+        <ul id="closestColorsList"></ul>
+    </div>
+        
+    <br>
+
+    <div style="margin-top: -10px;">
+        
+        <div id="hintSection" style="margin-bottom: 7px;">
+            <h3 style="display: inline; margin: 0px; vertical-align: middle;">Closest Color Match (<span id="hintColorAccuracy"></span>):</h3> <div id="hintStyle"><b id="hintColorText"><span id="hintColorName"></b></span> <span id="hintColorHex"></span> <span id="hintColorRgb"></span><span id="hintColorError"></span></div>
+        </div>
+
+
+        <h3 style="display: inline; margin: 0; vertical-align: middle;">Enter Color Name?:</h3>
+        <input autocomplete="off" type="text" id="colorName" placeholder="Enter color (e.g., blue/grey) for train" list="colorList" style="display: inline; margin: 0; vertical-align: middle;" onkeydown="handleKeyPress(event)">
+
+        <datalist id="colorList">
+            <option value="aliceblue">
+            <option value="antiquewhite">
+            <option value="aqua">
+            <option value="aquamarine">
+            <option value="azure">
+            <option value="beige">
+            <option value="bisque">
+            <option value="black">
+            <option value="blanchedalmond">
+            <option value="blue">
+            <option value="blueviolet">
+            <option value="brown">
+            <option value="burlywood">
+            <option value="cadetblue">
+            <option value="chartreuse">
+            <option value="chocolate">
+            <option value="coral">
+            <option value="cornflowerblue">
+            <option value="cornsilk">
+            <option value="crimson">
+            <option value="cyan">
+            <option value="darkblue">
+            <option value="darkcyan">
+            <option value="darkgoldenrod">
+            <option value="darkgray">
+            <option value="darkgreen">
+            <option value="darkkhaki">
+            <option value="darkmagenta">
+            <option value="darkolivegreen">
+            <option value="darkorange">
+            <option value="darkorchid">
+            <option value="darkred">
+            <option value="darksalmon">
+            <option value="darkseagreen">
+            <option value="darkslateblue">
+            <option value="darkslategray">
+            <option value="darkturquoise">
+            <option value="darkviolet">
+            <option value="deeppink">
+            <option value="deepskyblue">
+            <option value="dimgray">
+            <option value="dodgerblue">
+            <option value="firebrick">
+            <option value="floralwhite">
+            <option value="forestgreen">
+            <option value="fuchsia">
+            <option value="gainsboro">
+            <option value="ghostwhite">
+            <option value="gold">
+            <option value="goldenrod">
+            <option value="gray">
+            <option value="green">
+            <option value="greenyellow">
+            <option value="honeydew">
+            <option value="hotpink">
+            <option value="indianred">
+            <option value="indigo">
+            <option value="ivory">
+            <option value="khaki">
+            <option value="lavender">
+            <option value="lavenderblush">
+            <option value="lawngreen">
+            <option value="lemonchiffon">
+            <option value="lightblue">
+            <option value="lightcoral">
+            <option value="lightcyan">
+            <option value="lightgoldenrodyellow">
+            <option value="lightgray">
+            <option value="lightgreen">
+            <option value="lightpink">
+            <option value="lightsalmon">
+            <option value="lightseagreen">
+            <option value="lightskyblue">
+            <option value="lightslategray">
+            <option value="lightsteelblue">
+            <option value="lightyellow">
+            <option value="lime">
+            <option value="limegreen">
+            <option value="linen">
+            <option value="magenta">
+            <option value="maroon">
+            <option value="mediumaquamarine">
+            <option value="mediumblue">
+            <option value="mediumorchid">
+            <option value="mediumpurple">
+            <option value="mediumseagreen">
+            <option value="mediumslateblue">
+            <option value="mediumspringgreen">
+            <option value="mediumturquoise">
+            <option value="mediumvioletred">
+            <option value="midnightblue">
+            <option value="mintcream">
+            <option value="mistyrose">
+            <option value="moccasin">
+            <option value="navajowhite">
+            <option value="navy">
+            <option value="oldlace">
+            <option value="olive">
+            <option value="olivedrab">
+            <option value="orange">
+            <option value="orangered">
+            <option value="orchid">
+            <option value="palegoldenrod">
+            <option value="palegreen">
+            <option value="paleturquoise">
+            <option value="palevioletred">
+            <option value="papayawhip">
+            <option value="peachpuff">
+            <option value="peru">
+            <option value="pink">
+            <option value="plum">
+            <option value="powderblue">
+            <option value="purple">
+            <option value="rebeccapurple">
+            <option value="red">
+            <option value="rosybrown">
+            <option value="royalblue">
+            <option value="saddlebrown">
+            <option value="salmon">
+            <option value="sandybrown">
+            <option value="seashell">
+            <option value="sienna">
+            <option value="silver">
+            <option value="skyblue">
+            <option value="slateblue">
+            <option value="slategray">
+            <option value="snow">
+            <option value="springgreen">
+            <option value="steelblue">
+            <option value="tan">
+            <option value="teal">
+            <option value="thistle">
+            <option value="tomato">
+            <option value="turquoise">
+            <option value="violet">
+            <option value="wheat">
+            <option value="white">
+            <option value="whitesmoke">
+            <option value="yellow">
+            <option value="yellowgreen">
+        </datalist>
+
+        <button onclick="submitColor()">Submit Color</button><button onclick="skipColor()">Skip Color</button>
+        <br>
+        <h3 style="display: inline; margin: 0; vertical-align: middle;">Enter Custom Color: </h3>
+
+        <input type="color" id="colorPicker" style="width: 35px; display: inline; margin-left: 5px; margin-right: 5px; vertical-align: middle;" oninput="updateColorInput(this.value)">
+        <input autocomplete="off" type="text" list="colorSuggestions" id="customColorInput" placeholder="Enter: (e.g., #ff0000 or rgb(255, 0, 0))" style="display: inline; margin: 0; vertical-align: middle;">
+
+        <button onclick="submitCustomColor()">Submit Custom Color</button><br>
+        <div style="text-align: center;">
+            <div style="display: inline-block; margin-top: 5px; margin-bottom: -20px;">
+                Num of mutations (4): <input type="number" style="margin-bottom: 5px; width: 65px;" min="1" id="numOfMutationsInput"><br>
+                Min change offset (2): <input type="number" style="margin-bottom: 5px; width: 65px;" min="0" id="minChangeOffsetInput"><br>
+                Max change offset (8): <input type="number" style="margin-bottom: 5px; width: 65px;" min="0" id="maxChangeOffsetInput">
+            </div>
+            
+            <div style="display: inline-block; margin-top: 5px; margin-bottom: -20px; text-align: left;">
+                Mutation type (All):
+                <select style="display: inline-block; margin-left: 10px; margin-bottom: 5px;" id="mutationTypeSelect">
+                    <option value="all">All (Red, Green, Blue)</option>
+                    <option value="none">None (No Mutation)</option>
+                    <option value="red">Red</option>
+                    <option value="green">Green</option>
+                    <option value="blue">Blue</option>
+                    <option value="ex_red">Exclude Red</option>
+                    <option value="ex_green">Exclude Green</option>
+                    <option value="ex_blue">Exclude Blue</option>
+                </select><br>
+            
+                Mutation Strategy (Uniform):
+                <select style="display: inline-block; margin-left: 10px; margin-bottom: 5px; width: 100px" id="mutationStrategySelect">
+                    <option value="uniform">Uniform</option>
+                    <option value="random">Random</option>
+                    <option value="gradual">Gradual</option>
+                </select><br>
+            
+                Randomness Factor (50%): <input type="range" min="0" max="100" value="50" style="cursor: pointer; display: inline-block; width: 125px" id="randomnessSlider">
+                <span id="randomnessValue" style="display: inline-block; width: 30px;">50%</span><br>
+            </div>
+            
+        </div>
+        
+
+        <h3 style="display: inline; margin: 0; vertical-align: middle;" >Upload your existing model:</h3>
+        <input type="file" id="uploadFile" style="cursor: pointer" onchange="handleFileUpload(event)">
+        <br>
+        <h3 style="display: inline;">Download your updated model <a id="modelLength">(0)</a>:</h3>
+        <button style="display: inline; margin-left: 10px;" onclick="downloadModel()">Download Model</button>
+        <button style="display: inline; margin-left: 10px;" onclick="downloadFullModel()">Download Full Model</button>
+
+        <br>
+        <h3 style="display: inline;">Pre-generated Models:</h3>
+
+        <a href="models/full_color_dataset.csv">Step16 (89 KB)</a> /
+        <a href="models/color_dataset_3s_c.csv">CSS3-S3 (13.5 MB)</a> /
+        <a id="download-link" href="models/color_dataset_167772   16.csv">CSS3-16777216 (357 MB)</a>
+    </div>
+    <script>
+        let colorsData = [];
+        let existingColors = new Set();
+        let uploadedModel = [];  
+        let currentColor = null;
+        let tempModel = [];
+
+        let currentRGB = '';
+        let currentHex = '';
+        let currentCMYK = '';
+
+        let numOfMutations = 4;
+        let minChangeOffset = 2;
+        let maxChangeOffset = 8;
+        let mutationType = 'all';
+        let mutationStrategy = 'uniform';
+        let randomnessFactor = 50;
+
+        fetch('models/color_dataset_134217_c.csv')
+            .then(response => response.text()) // Get the CSV content as text
+            .then(content => {
+                tempModel = parseCSV(content);
+                displayColor(currentColor);
+            })
+            .catch(error => {
+                console.error('Error loading the CSV file:', error);
+            });
+
+        const numOfMutationsInput = document.getElementById('numOfMutationsInput');
+        const minChangeOffsetInput = document.getElementById('minChangeOffsetInput');
+        const maxChangeOffsetInput = document.getElementById('maxChangeOffsetInput');
+        const mutationTypeSelect = document.getElementById('mutationTypeSelect');
+        const mutationStrategySelect = document.getElementById('mutationStrategySelect');
+        const randomnessSlider = document.getElementById('randomnessSlider');
+        const randomnessValue = document.getElementById('randomnessValue');
+    
+        numOfMutationsInput.addEventListener('blur', function() {
+            numOfMutations = Math.max(1, parseInt(numOfMutationsInput.value));
+            numOfMutationsInput.value = numOfMutations;
+            console.log('Num of Mutations:', numOfMutations);
+            saveToLocalStorage();
+        });
+
+        minChangeOffsetInput.addEventListener('blur', function() {
+            minChangeOffset = Math.max(0, parseInt(minChangeOffsetInput.value)); 
+            minChangeOffset = Math.min(minChangeOffset, maxChangeOffset);
+
+            minChangeOffsetInput.value = minChangeOffset;
+            console.log('Min Change Offset:', minChangeOffset);
+            saveToLocalStorage();
+        });
+
+        maxChangeOffsetInput.addEventListener('blur', function() {
+            maxChangeOffset = Math.max(0, parseInt(maxChangeOffsetInput.value)); 
+            maxChangeOffset = Math.max(maxChangeOffset, minChangeOffset);
+
+            maxChangeOffsetInput.value = maxChangeOffset; 
+            console.log('Max Change Offset:', maxChangeOffset);
+            saveToLocalStorage();
+        });
+
+
+        mutationTypeSelect.addEventListener('change', function() {
+            mutationType = mutationTypeSelect.value;
+            console.log('Mutation Type:', mutationType);
+            saveToLocalStorage();
+        });
+
+        mutationStrategySelect.addEventListener('change', function() {
+            mutationStrategy = mutationStrategySelect.value;
+            console.log('Mutation Strategy:', mutationStrategy);
+            saveToLocalStorage();
+        });
+
+        randomnessSlider.addEventListener('input', function() {
+            randomnessFactor = parseInt(randomnessSlider.value);
+            randomnessValue.textContent = randomnessFactor + '%';
+            saveToLocalStorage();
+        });
+
+        function saveToLocalStorage() {
+            localStorage.setItem('numOfMutations', numOfMutations);
+            localStorage.setItem('minChangeOffset', minChangeOffset);
+            localStorage.setItem('maxChangeOffset', maxChangeOffset);
+            localStorage.setItem('mutationType', mutationType);
+            localStorage.setItem('mutationStrategy', mutationStrategy);
+            localStorage.setItem('randomnessFactor', randomnessFactor);
+        }
+
+        function loadFromLocalStorage() {
+            const savedNumOfMutations = localStorage.getItem('numOfMutations');
+            const savedMinChangeOffset = localStorage.getItem('minChangeOffset');
+            const savedMaxChangeOffset = localStorage.getItem('maxChangeOffset');
+            const savedMutationType = localStorage.getItem('mutationType');
+            const savedMutationStrategy = localStorage.getItem('mutationStrategy');
+            const savedRandomnessFactor = localStorage.getItem('randomnessFactor');
+
+            if (savedNumOfMutations !== null) numOfMutations = parseInt(savedNumOfMutations);
+            if (savedMinChangeOffset !== null) minChangeOffset = parseInt(savedMinChangeOffset);
+            if (savedMaxChangeOffset !== null) maxChangeOffset = parseInt(savedMaxChangeOffset);
+            if (savedMutationType !== null) mutationType = savedMutationType;
+            if (savedMutationStrategy !== null) mutationStrategy = savedMutationStrategy;
+            if (savedRandomnessFactor !== null) randomnessFactor = parseInt(savedRandomnessFactor);
+
+            // Update the UI with saved values
+            numOfMutationsInput.value = numOfMutations;
+            minChangeOffsetInput.value = minChangeOffset;
+            maxChangeOffsetInput.value = maxChangeOffset;
+            mutationTypeSelect.value = mutationType;
+            mutationStrategySelect.value = mutationStrategy;
+            randomnessSlider.value = randomnessFactor;
+            randomnessValue.textContent = randomnessFactor + '%';
+
+            console.log('Loaded Values:', {
+                numOfMutations,
+                minChangeOffset,
+                maxChangeOffset,
+                mutationType,
+                mutationStrategy,
+                randomnessFactor
+            });
+        }
+
+        loadFromLocalStorage();
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent default behavior
+                
+                if (event.shiftKey) {
+                    skipColor(); // Shift + Enter will skip the color
+                } else {
+                    submitColor(); // Enter alone will submit the color
+                    const colorInput = document.getElementById("colorName");
+                    colorInput.blur(); // Temporarily remove focus
+                    setTimeout(() => colorInput.focus(), 0); // Immediately refocus
+                }
+            }
+        }
+
+        function checkCheckbox() {
+            var checkbox = document.querySelector('input[type="checkbox"]');
+            if (checkbox.checked) {
+                fetch('models/color_dataset.csv')
+                .then(response => response.text()) // Get the CSV content as text
+                .then(content => {
+                    uploadedModel = parseCSV(content);
+
+                    document.getElementById('uploadFile').value = '';
+
+                    displayColorHint(currentColor);
+                })
+                .catch(error => {
+                    console.error('Error loading the CSV file:', error);
+                });
+            } else {
+                uploadedModel = [];
+                displayColorHint(currentColor);
+            }
+        }
+
+        function generateRandomColor() {
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            const hex = rgbToHex(r, g, b);
+            return { r, g, b, hex };
+        }
+
+        function rgbToHex(r, g, b) {
+            return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+        }
+
+        function displayColor(color) {
+            // const color = generateRandomColor();
+
+            document.getElementById('colorBox').style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
+
+            document.getElementById('hexValue').textContent = color.hex.toUpperCase();
+            document.getElementById('rgbValue').textContent = `(${color.r}, ${color.g}, ${color.b})`;
+
+            currentColor = color;
+
+            document.getElementById('colorPicker').color = color;
+            colorPicker.value = rgbToHex(color.r, color.g, color.b);
+
+            displayColorHint(currentColor);
+
+            currentRGB = `rgb(${color.r},${color.g},${color.b})`;
+            currentHex = rgbToHex(color.r, color.g, color.b).toUpperCase();
+
+            let _cmyk = rgbToCmyk(color.r, color.g, color.b);
+            currentCMYK = `cmyk(${(_cmyk.c * 100).toFixed(2)}%, ${(_cmyk.m * 100).toFixed(2)}%, ${(_cmyk.y * 100).toFixed(2)}%, ${(_cmyk.k * 100).toFixed(2)}%)`;
+
+
+            console.log(currentRGB, currentHex, currentCMYK);
+
+            const luminance = calculateLuminance(color.r, color.g, color.b);
+
+            const textColor = luminance > 0.5 ? 'black' : 'white';
+
+            document.getElementById('colorDescription').style.color = textColor;
+            const hsl = rgbToHsl(color.r, color.g, color.b);
+            const cmyk = rgbToCmyk(color.r, color.g, color.b);
+            
+            let name = getClosestColor(tempModel, color) && getClosestColor(tempModel, color).name;
+
+            if (name == 'cyan' || name == 'aqua') { name = 'aqua/cyan'; }
+            if (name == 'fuschia' || name == 'magenta') { name = 'fuschia/magenta'; }
+            
+            document.getElementById('colorDescriptionBetter').innerHTML = `
+                <strong>Hex Code:</strong> ${color.hex || '#FFFFFF'}<br>
+                <strong>RGB Values:</strong> rgb(${color.r}, ${color.g}, ${color.b})<br>
+                <strong>HSL:</strong> hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)<br>
+                <strong>CMYK:</strong> cmyk(${(cmyk.c * 100).toFixed(2)}%, ${(cmyk.m * 100).toFixed(2)}%, ${(cmyk.y * 100).toFixed(2)}%, ${(cmyk.k * 100).toFixed(2)}%)<br>
+                <strong>Color Name:</strong> ${name || 'Unknown'}<br>
+                <strong>Brightness:</strong> ${(0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b).toFixed(2)} (0-255 scale)<br>
+                <strong>Hue:</strong> ${(Math.atan2(Math.sqrt(3) * (color.g - color.b), 2 * color.r - color.g - color.b) * 180 / Math.PI).toFixed(2)}°<br>
+                <strong>Saturation:</strong> ${((Math.max(color.r, color.g, color.b) - Math.min(color.r, color.g, color.b)) / Math.max(color.r, color.g, color.b) * 100 || 0).toFixed(6)}%<br>
+                <strong>Lightness:</strong> ${(Math.max(color.r, color.g, color.b) + Math.min(color.r, color.g, color.b)) / 2 || 0}<br>
+                <strong>Luminance:</strong> ${luminance.toFixed(8)}<br>
+            `;
+        }
+
+
+        function rgbToHsl(r, g, b) {
+            r /= 255;
+            g /= 255;
+            b /= 255;
+            let max = Math.max(r, g, b),
+                min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+            if (max === min) {
+                h = s = 0;
+            } else {
+                let d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r:
+                        h = (g - b) / d + (g < b ? 6 : 0);
+                        break;
+                    case g:
+                        h = (b - r) / d + 2;
+                        break;
+                    case b:
+                        h = (r - g) / d + 4;
+                        break;
+                }
+                h /= 6;
+            }
+            return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+        }
+
+        function rgbToCmyk(r, g, b) {
+            let c = 1 - (r / 255),
+                m = 1 - (g / 255),
+                y = 1 - (b / 255);
+            let k = Math.min(c, Math.min(m, y));
+            if (k < 1) {
+                c = (c - k) / (1 - k);
+                m = (m - k) / (1 - k);
+                y = (y - k) / (1 - k);
+            }
+            return { c, m, y, k };
+        }
+
+        function calculateLuminance(r, g, b) {
+
+            r = r / 255;
+            g = g / 255;
+            b = b / 255;
+
+            return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        }
+
+        function updateColorInput(color) {
+            document.getElementById('customColorInput').value = color;
+        }
+
+        function displayColorHint(color) {
+            const hintSection = document.getElementById('hintSection');
+            const closestColorsSection = document.getElementById('closestColorsSection');
+            const closestColorsList = document.getElementById('closestColorsList');
+    
+            let model = (uploadedModel.length === 0) ? colorsData : [...uploadedModel, ...colorsData];
+
+            if (model.length === 0) {
+                console.log('nothing in model!');
+                hintSection.style.display = 'none';
+                closestColorsSection.style.display = 'none';
+                
+                return;
+            } else {
+
+                hintSection.style.display = 'block';
+                if (model.length >= 2) {
+
+                    closestColorsSection.style.display = 'block';
+                }
+            }
+
+            if (model.length >= 2) {
+                document.getElementById('lengthOfModel').innerHTML = `Closest Matches (${Math.min(7, model.length)-1}/${model.length})`;
+            }
+
+            document.getElementById('modelLength').innerHTML = `(${model.length})`;
+
+            const closestColors = getClosestColors(model, color, 6+1); 
+            closestColorsList.innerHTML = '';
+            closestColors.slice(1).forEach(closestColor => {
+                const accuracy = 1 - (Math.abs(color.r - closestColor.r) + Math.abs(color.g - closestColor.g) + Math.abs(color.b - closestColor.b)) / 765;
+
+                const listItem = document.createElement('li');
+                const rDifference = (color.r - closestColor.r) > 0 ? `+${color.r - closestColor.r}` : (color.r - closestColor.r).toString();
+                const gDifference = (color.g - closestColor.g) > 0 ? `+${color.g - closestColor.g}` : (color.g - closestColor.g).toString();
+                const bDifference = (color.b - closestColor.b) > 0 ? `+${color.b - closestColor.b}` : (color.b - closestColor.b).toString();
+
+                listItem.innerHTML = `
+                    <span style="background-color: rgb(${closestColor.r}, ${closestColor.g}, ${closestColor.b}); 
+                                display: inline-block; width: 20px; height: 20px; margin-right: 10px; border: 1px solid black;"></span>
+                    <strong>${closestColor.name}</strong> 
+                    (${closestColor.r}[${rDifference}], ${closestColor.g}[${gDifference}], ${closestColor.b}[${bDifference}]) - 
+                    Accuracy: ${(accuracy * 100).toFixed(2)}%
+                `;
+                closestColorsList.appendChild(listItem);
+
+            });
+
+
+            let closestColor = getClosestColor(model, color);
+            if (closestColor) {
+                document.getElementById('hintColorName').textContent = closestColor.name;  
+                document.getElementById('hintColorText').style.color = `rgb(${closestColor.r}, ${closestColor.g}, ${closestColor.b})`
+				
+				const r = (color.r - closestColor.r) > 0 ? `+${color.r - closestColor.r}` : (color.r - closestColor.r).toString();
+                const g = (color.g - closestColor.g) > 0 ? `+${color.g - closestColor.g}` : (color.g - closestColor.g).toString();
+                const b = (color.b - closestColor.b) > 0 ? `+${color.b - closestColor.b}` : (color.b - closestColor.b).toString();
+                
+                document.getElementById('hintColorRgb').textContent = `(${closestColor.r}[${r}], ${closestColor.g}[${g}], ${closestColor.b}[${b}])`;
+
+                const accuracy = 1 - (Math.abs(color.r-closestColor.r) + Math.abs(color.g-closestColor.g) + Math.abs(color.b-closestColor.b)) / 765;
+
+                document.getElementById('hintColorAccuracy').innerHTML = `${(accuracy * 100).toFixed(2)}%`;
+
+            }
+        }
+
+        function colorDistanceSquared(c1, c2) {
+            const rDiff = c1.r - c2.r;
+            const gDiff = c1.g - c2.g;
+            const bDiff = c1.b - c2.b;
+            return rDiff * rDiff + gDiff * gDiff + bDiff * bDiff;
+        }
+
+        function getClosestColor(model, color) {
+            let minDistance = Infinity;
+            let closestColor = null;
+
+            for (let i = 0; i < model.length; i++) {
+                const distance = colorDistanceSquared(color, model[i]);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestColor = model[i];
+                }
+            }
+
+            return closestColor;
+        }
+
+        function getClosestColors(model, color, N = 5) {
+            const distances = [];
+
+            for (let i = 0; i < model.length; i++) {
+                const modelColor = model[i];
+                const distance = colorDistanceSquared(color, modelColor);
+                distances.push({ color: modelColor, distance });
+            }
+
+            distances.sort((a, b) => a.distance - b.distance);
+            return distances.slice(0, N).map(item => item.color);
+        }
+
+
+        function handleFileUpload(event) {
+
+            const file = event.target.files[0];
+            if (!file || !file.name.toLowerCase().endsWith('.csv')) {
+                alert("Please upload a valid CSV file.");
+                event.target.value = '';  
+                uploadedModel = [];  
+                displayColorHint(currentColor);
+                return;
+            }
+
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const content = e.target.result;
+
+                const parsedData = parseCSV(content);
+                const header = content.split(',').map(cell => cell.trim());
+                if (header[0].toLowerCase() != 'red' || 
+                    header[1].toLowerCase() != 'green' ||
+                    header[2].toLowerCase() != 'blue' ||
+                    !header[3].toLowerCase().startsWith('name')) {
+                        alert("Please upload a valid CSV file. Invalid header format: Red,GreenBlue,Name (include this to the top of the file)");
+                        event.target.value = '';  
+                        uploadedModel = [];  
+                        displayColorHint(currentColor);
+                        return;
+                    }
+
+                if (parsedData.length === 0) {
+
+                    event.target.value = '';  
+                    uploadedModel = [];  
+                    alert("Model not loaded successfully! The uploaded file may be empty or invalid.");
+                    return;
+                } else {
+
+                    uploadedModel = parsedData;
+                    alert("Model uploaded successfully!");
+
+                    document.getElementById('checkbox-use-model').checked = false;
+
+                    displayColorHint(currentColor);
+                }
+            };
+
+            reader.readAsText(file);
+        }
+
+        function parseCSV(csvContent) {
+            const rows = csvContent.split('\n');
+            const data = [];
+            rows.forEach((row, index) => {
+                if (index === 0) return;  
+                const columns = row.trim().split(/[\t,]/);
+                if (columns.length === 4) {  
+                    const colorData = {
+                        r: parseInt(columns[0]),
+                        g: parseInt(columns[1]),
+                        b: parseInt(columns[2]),
+
+                        name: columns[3].replace(/"/g, ''),
+                    };
+                    data.push(colorData);
+                }
+            });
+
+
+            return data;
+        }
+
+        function submitColor() {
+            const colorNameInput = document.getElementById('colorName').value;
+            if (!colorNameInput) {
+                alert("Please enter a color name.");
+                return;
+            }
+
+            console.log(`Added: ${colorNameInput}`);
+            handleColorNames(colorNameInput);
+            document.getElementById('colorName').value = '';
+            displayColor(generateRandomColor());
+        }
+
+        function submitCustomColor() {
+            const customColorInput = document.getElementById('customColorInput').value.trim();
+            const colorPicker = document.getElementById('colorPicker'); 
+            
+            let model;
+
+            if (uploadedModel.length === 0) {
+                if (customColorInput in colorsData) {
+                    model = colorsData;    
+                } else {
+                    model = tempModel;
+
+                }
+            } else {
+                model = uploadedModel; 
+            }
+
+            if (customColorInput) {
+                let color;
+
+                let modelColors = model.filter(color => color.name === customColorInput);
+
+                if (modelColors.length > 0) {
+                    color = modelColors[Math.floor(Math.random() * modelColors.length)];
+
+                } else if (customColorInput.startsWith('#')) {
+                    color = hexToRgb(customColorInput);
+                
+                } else if (customColorInput.startsWith('rgb')) {
+                    const rgbValues = customColorInput.match(/\d+/g);
+                    color = { r: parseInt(rgbValues[0]), g: parseInt(rgbValues[1]), b: parseInt(rgbValues[2]) };
+                
+                } else {
+                    alert("Invalid color format. Please use a color name (e.g., 'red'), Hex (e.g., #ff0000), or RGB (e.g., rgb(255,0,0)). Or maybe an model is not uploaded, or the model dont have this color in it!");
+                    return;
+                }
+
+                colorPicker.color = color;
+                currentColor = color;
+
+                document.getElementById('colorBox').style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
+                document.getElementById('hexValue').textContent = rgbToHex(color.r, color.g, color.b).toUpperCase();
+                document.getElementById('rgbValue').textContent = `(${color.r}, ${color.g}, ${color.b})`;
+
+                colorPicker.value = rgbToHex(color.r, color.g, color.b); // Update the color picker input
+
+                displayColorHint(currentColor);
+                
+                currentRGB = `rgb(${color.r},${color.g},${color.b})`;
+                currentHex = rgbToHex(color.r, color.g, color.b).toUpperCase();
+
+                let _cmyk = rgbToCmyk(color.r, color.g, color.b);
+                currentCMYK = `cmyk(${(_cmyk.c * 100).toFixed(2)}%, ${(_cmyk.m * 100).toFixed(2)}%, ${(_cmyk.y * 100).toFixed(2)}%, ${(_cmyk.k * 100).toFixed(2)}%)`;
+
+
+                console.log(currentRGB, currentHex, currentCMYK);
+
+                const luminance2 = calculateLuminance(color.r, color.g, color.b);
+
+                const textColor2 = luminance2 > 0.5 ? 'black' : 'white';
+
+                document.getElementById('colorDescription').style.color = textColor2;
+
+                const hsl = rgbToHsl(color.r, color.g, color.b);
+                const cmyk = rgbToCmyk(color.r, color.g, color.b);
+                
+
+                let name = getClosestColor(tempModel, color) && getClosestColor(tempModel, color).name;
+
+                if (name == 'cyan' || name == 'aqua') { name = 'aqua/cyan'; }
+                if (name == 'fuchsia' || name == 'magenta') { name = 'fuschia/magenta'; }
+
+                const luminance = calculateLuminance(color.r, color.g, color.b);
+
+                document.getElementById('colorDescriptionBetter').innerHTML = `
+                    <strong>Hex Code:</strong> ${rgbToHex(color.r, color.g, color.b) || '#FFFFFF'}<br>
+                    <strong>RGB Values:</strong> rgb(${color.r}, ${color.g}, ${color.b})<br>
+                    <strong>HSL:</strong> hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)<br>
+                    <strong>CMYK:</strong> cmyk(${(cmyk.c * 100).toFixed(2)}%, ${(cmyk.m * 100).toFixed(2)}%, ${(cmyk.y * 100).toFixed(2)}%, ${(cmyk.k * 100).toFixed(2)}%)<br>
+                    <strong>Color Name:</strong> ${name || 'Unknown'}<br>
+                    <strong>Brightness:</strong> ${(0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b).toFixed(2)} (0-255 scale)<br>
+                    <strong>Hue:</strong> ${(Math.atan2(Math.sqrt(3) * (color.g - color.b), 2 * color.r - color.g - color.b) * 180 / Math.PI).toFixed(2)}°<br>
+                    <strong>Saturation:</strong> ${((Math.max(color.r, color.g, color.b) - Math.min(color.r, color.g, color.b)) / Math.max(color.r, color.g, color.b) * 100 || 0).toFixed(6)}%<br>
+                    <strong>Lightness:</strong> ${(Math.max(color.r, color.g, color.b) + Math.min(color.r, color.g, color.b)) / 2 || 0}<br>
+                    <strong>Luminance:</strong> ${luminance.toFixed(8)}<br>
+                `;
+
+                const textColor = luminance > 0.5 ? 'black' : 'white';
+
+                document.getElementById('colorDescription').style.color = textColor;
+            } else {
+                alert("Invalid color format. Please use Hex (e.g., #ff0000) or RGB (e.g., rgb(255,0,0)).");
+                return;
+            }
+        }
+
+        function hexToRgb(hex) {
+            const hexWithoutHash = hex.slice(1);
+            const r = parseInt(hexWithoutHash.slice(0, 2), 16);
+            const g = parseInt(hexWithoutHash.slice(2, 4), 16);
+            const b = parseInt(hexWithoutHash.slice(4, 6), 16);
+            return { r, g, b };
+        }
+
+        function skipColor() {
+
+            document.getElementById('colorName').value = '';
+            displayColor(generateRandomColor());
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey) {
+                if (event.key === 'r' || event.key === 'R') {
+                    event.preventDefault();
+                    copyToClipboard(currentRGB);
+                    alert(`Copied RGB: ${currentRGB}`);
+                } else if (event.key === 'h' || event.key === 'H') {
+                    event.preventDefault(); 
+                    copyToClipboard(currentHex);
+                    alert(`Copied HEX: ${currentHex}`);
+                }
+            }
+
+        });
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                console.log('Copied to clipboard');
+            }).catch(err => {
+                console.error('Could not copy text: ', err);
+            });
+        }
+
+        function handleColorNames(colorNameInput) {
+            const colorNames = colorNameInput.split('/').map(name => name.trim());
+
+            colorNames.forEach(colorName => {
+                const colorVariations = createColorVariations(currentColor);
+                colorVariations.forEach(variation => {
+                    const colorData = { 
+
+                        r: variation.r, 
+                        g: variation.g, 
+                        b: variation.b, 
+                        name: colorName, 
+
+                    };
+
+                    if (!existingColors.has(variation.hex)) {
+                        colorsData.push(colorData);
+                        existingColors.add(variation.hex);
+                    }
+                });
+            });
+        }
+
+        function getRandomOffset(minOffset, maxOffset, randFactor) {
+            let fullRange = maxOffset - minOffset + 1;
+            let randomValue = Math.random() * fullRange * randFactor;
+            let offset = Math.floor(randomValue) + minOffset;
+            
+            return offset;
+        }
+
+        function createColorVariations(baseColor) {
+            const variations = [];
+
+            let nOVars = numOfMutations; // User-defined number of mutations
+            let numberOfVariations = Math.floor(Math.random() * nOVars + (nOVars / 2)); // Ensure a reasonable number of variations
+            let upperLimit = maxChangeOffset; // Upper offset based on user input
+            let lowerLimit = minChangeOffset; // Lower offset based on user input
+
+            numberOfVariations = Math.max(1, numberOfVariations);
+
+            const randomnessInfluence = randomnessFactor / 100; // Convert to a 0-1 scale
+
+            console.log(`Strategy: ${mutationStrategy}`);
+            console.log(`Type: ${mutationType}`);
+            console.log(`Base Color: R:${baseColor.r} G:${baseColor.g} B:${baseColor.b}`);
+
+
+            for (let i = 0; i < numberOfVariations; i++) {
+                let rOffset, gOffset, bOffset;
+                if (mutationStrategy === 'random') {
+                    rOffset = Math.floor((Math.random() * (maxChangeOffset - minChangeOffset + 1) + minChangeOffset) * (1 + randomnessInfluence));
+                    gOffset = Math.floor((Math.random() * (maxChangeOffset - minChangeOffset + 1) + minChangeOffset) * (1 + randomnessInfluence));
+                    bOffset = Math.floor((Math.random() * (maxChangeOffset - minChangeOffset + 1) + minChangeOffset) * (1 + randomnessInfluence));
+                } else if (mutationStrategy === 'gradual') {
+                    rOffset = Math.floor(minChangeOffset + (i * (maxChangeOffset - minChangeOffset) / (numOfMutations - 1)) * (1 + randomnessInfluence));
+                    gOffset = Math.floor(minChangeOffset + ((i + 1) * (maxChangeOffset - minChangeOffset) / (numOfMutations - 1)) * (1 + randomnessInfluence)); // Increment slightly differently
+                    bOffset = Math.floor(minChangeOffset + ((i + 2) * (maxChangeOffset - minChangeOffset) / (numOfMutations - 1)) * (1 + randomnessInfluence)); // Increment even further
+                } else { // (default)
+                    rOffset = getRandomOffset(minChangeOffset, maxChangeOffset, randomnessInfluence);
+                    gOffset = getRandomOffset(minChangeOffset, maxChangeOffset, randomnessInfluence);
+                    bOffset = getRandomOffset(minChangeOffset, maxChangeOffset, randomnessInfluence);
+                }
+
+                let r = baseColor.r;
+                let b = baseColor.b;
+                let g = baseColor.g;
+
+                if (mutationType === 'all' || mutationType === 'red' || mutationType === 'ex_green' || mutationType === 'ex_blue') {
+                    r = Math.min(255, Math.max(0, r + (Math.random() > 0.5 ? rOffset : -rOffset)));
+                }
+                if (mutationType === 'all' || mutationType === 'green' || mutationType === 'ex_red' || mutationType === 'ex_blue') {
+                    g = Math.min(255, Math.max(0, g + (Math.random() > 0.5 ? gOffset : -gOffset)));
+                }
+                if (mutationType === 'all' || mutationType === 'blue' || mutationType === 'ex_red' || mutationType === 'ex_green') {
+                    b = Math.min(255, Math.max(0, b + (Math.random() > 0.5 ? bOffset : -bOffset)));
+                }
+                const hex = rgbToHex(r, g, b);
+                variations.push({ r, g, b, hex });
+            }
+
+            return variations;
+        }
+
+        function downloadModel() {
+
+            if (colorsData.length === 0) {
+                alert("No data to download.");
+                return;
+            }
+
+            // Format current date as YYYY-MM-DD_HH-MM-SS
+            const date = new Date();
+            const dateString = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}_${date.getHours().toString().padStart(2, '0')}-${date.getMinutes().toString().padStart(2, '0')}-${date.getSeconds().toString().padStart(2, '0')}`;
+
+            let csvContent = "Red,Green,Blue,Name\n";
+            colorsData.forEach(row => {
+                csvContent += `${row.r},${row.g},${row.b},${row.name}\n`;
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `color_model_${dateString}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadFullModel() {
+
+            if (uploadedModel.length === 0) {
+                alert("No data to download. No model uploaded");
+                return;
+            }
+
+            // Format current date as YYYY-MM-DD_HH-MM-SS
+            const date = new Date();
+            const dateString = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}_${date.getHours().toString().padStart(2, '0')}-${date.getMinutes().toString().padStart(2, '0')}-${date.getSeconds().toString().padStart(2, '0')}`;
+
+            let csvContent = "Red,Green,Blue,Name\n";
+            uploadedModel.forEach(row => {
+                csvContent += `${row.r},${row.g},${row.b},${row.name}\n`;
+            });
+
+            colorsData.forEach(row => {
+                csvContent += `${row.r},${row.g},${row.b},${row.name}\n`;
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `full_color_model_${dateString}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+
+        function toggleInfoBox() {
+            var infoBox = document.querySelector('.info-box');
+
+            if (infoBox.style.display === 'block') {
+                infoBox.style.display = 'none';
+            } else {
+                infoBox.style.display = 'block';
+            }
+        }
+
+        function closeInfoBoxIfClickedOutside(event) {
+            var infoBox = document.querySelector('.info-box');
+            var infoIcon = document.querySelector('.info-icon');
+
+            if (
+                !infoBox.contains(event.target) && 
+                !infoIcon.contains(event.target)    
+            ) {
+                infoBox.style.display = 'none'; 
+            }
+        }
+
+        document.addEventListener('click', closeInfoBoxIfClickedOutside);
+
+        document.querySelector('.info-box').addEventListener('click', function(event) {
+            event.stopPropagation(); 
+        });
+
+        displayColor(generateRandomColor());
+
+    </script>
+
+</body>
+</html>
