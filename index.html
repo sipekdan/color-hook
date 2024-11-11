@@ -290,7 +290,7 @@
         let mutationStrategy = 'uniform';
         let randomnessFactor = 50;
 
-        fetch('models/color_dataset_134217_c.csv')
+        fetch('models/color_dataset.csv')
             .then(response => response.text()) // Get the CSV content as text
             .then(content => {
                 tempModel = parseCSV(content);
