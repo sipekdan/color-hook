@@ -302,6 +302,7 @@
             .then(content => {
                 tempModel = parseCSV(content);
                 displayColor(currentColor);
+                console.log("DONE!\n");
             })
             .catch(error => {
                 console.error('Error loading the CSV file:', error);
@@ -415,20 +416,12 @@
         }
 
         function checkCheckbox() {
-            var checkbox = document.querySelector('input[type="checkbox"]');
+            var checkbox = document.getElementById('checkbox-use-model');// document.querySelector('input[type="checkbox"]');            
             if (checkbox.checked) {
-                fetch('models/color_dataset.csv')
-                .then(response => response.text()) // Get the CSV content as text
-                .then(content => {
-                    uploadedModel = parseCSV(content);
-
-                    document.getElementById('uploadFile').value = '';
-
-                    displayColorHint(currentColor);
-                })
-                .catch(error => {
-                    console.error('Error loading the CSV file:', error);
-                });
+                
+                uploadedModel = tempModel;
+                document.getElementById('uploadFile').value = '';
+                displayColorHint(currentColor);
             } else {
                 uploadedModel = [];
                 displayColorHint(currentColor);
