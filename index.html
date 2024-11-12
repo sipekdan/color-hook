@@ -312,7 +312,6 @@
         numOfMutationsInput.addEventListener('blur', function() {
             numOfMutations = Math.max(1, parseInt(numOfMutationsInput.value));
             numOfMutationsInput.value = numOfMutations;
-            console.log('Num of Mutations:', numOfMutations);
             saveToLocalStorage();
         });
 
@@ -321,7 +320,6 @@
             minChangeOffset = Math.min(minChangeOffset, maxChangeOffset);
 
             minChangeOffsetInput.value = minChangeOffset;
-            console.log('Min Change Offset:', minChangeOffset);
             saveToLocalStorage();
         });
 
@@ -330,21 +328,18 @@
             maxChangeOffset = Math.max(maxChangeOffset, minChangeOffset);
 
             maxChangeOffsetInput.value = maxChangeOffset; 
-            console.log('Max Change Offset:', maxChangeOffset);
             saveToLocalStorage();
         });
 
 
         mutationTypeSelect.addEventListener('change', function() {
             mutationType = mutationTypeSelect.value;
-            console.log('Mutation Type:', mutationType);
             saveToLocalStorage();
         });
 
         mutationStrategySelect.addEventListener('change', function() {
             mutationStrategy = mutationStrategySelect.value;
-            console.log('Mutation Strategy:', mutationStrategy);
-            saveToLocalStorage();
+	    saveToLocalStorage();
         });
 
         randomnessSlider.addEventListener('input', function() {
@@ -467,9 +462,6 @@
             let _cmyk = rgbToCmyk(color.r, color.g, color.b);
             currentCMYK = `cmyk(${(_cmyk.c * 100).toFixed(2)}%, ${(_cmyk.m * 100).toFixed(2)}%, ${(_cmyk.y * 100).toFixed(2)}%, ${(_cmyk.k * 100).toFixed(2)}%)`;
 
-
-            console.log(currentRGB, currentHex, currentCMYK);
-
             const luminance = calculateLuminance(color.r, color.g, color.b);
 
             const textColor = luminance > 0.5 ? 'black' : 'white';
@@ -560,7 +552,7 @@
             let model = (uploadedModel.length === 0) ? colorsData : [...uploadedModel, ...colorsData];
 
             if (model.length === 0) {
-                console.log('nothing in model!');
+                // console.log('Nothing in model!');
                 hintSection.style.display = 'none';
                 closestColorsSection.style.display = 'none';
                 
@@ -734,7 +726,7 @@
                 return;
             }
 
-            console.log(`Added: ${colorNameInput}`);
+            // console.log(`Added: ${colorNameInput}`);
             handleColorNames(colorNameInput);
             document.getElementById('colorName').value = '';
             displayColor(generateRandomColor());
@@ -793,9 +785,6 @@
 
                 let _cmyk = rgbToCmyk(color.r, color.g, color.b);
                 currentCMYK = `cmyk(${(_cmyk.c * 100).toFixed(2)}%, ${(_cmyk.m * 100).toFixed(2)}%, ${(_cmyk.y * 100).toFixed(2)}%, ${(_cmyk.k * 100).toFixed(2)}%)`;
-
-
-                console.log(currentRGB, currentHex, currentCMYK);
 
                 const luminance2 = calculateLuminance(color.r, color.g, color.b);
 
@@ -867,9 +856,9 @@
 
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
-                console.log('Copied to clipboard');
+                //console.log('Copied to clipboard');
             }).catch(err => {
-                console.error('Could not copy text: ', err);
+                //console.error('Could not copy text: ', err);
             });
         }
 
@@ -915,11 +904,6 @@
             numberOfVariations = Math.max(1, numberOfVariations);
 
             const randomnessInfluence = randomnessFactor / 100; // Convert to a 0-1 scale
-
-            console.log(`Strategy: ${mutationStrategy}`);
-            console.log(`Type: ${mutationType}`);
-            console.log(`Base Color: R:${baseColor.r} G:${baseColor.g} B:${baseColor.b}`);
-
 
             for (let i = 0; i < numberOfVariations; i++) {
                 let rOffset, gOffset, bOffset;
