@@ -897,7 +897,7 @@
             const variations = [];
 
             let nOVars = numOfMutations; // User-defined number of mutations
-            let numberOfVariations = nOVars + Math.round(Math.random() * 4 - 2); // Ensure a reasonable number of variations
+            let numberOfVariations = Math.max(1, nOVars + Math.round(Math.random() * 4 - 2)); // Ensure a reasonable number of variations
             let upperLimit = maxChangeOffset; // Upper offset based on user input
             let lowerLimit = minChangeOffset; // Lower offset based on user input
 
