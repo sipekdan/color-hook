@@ -15,6 +15,11 @@ body {
     position: relative;
 }
 @media only screen and (max-width: 767px) {
+    
+    body {
+        overflow: auto;
+    }
+    
     .color-box {
         width: 200px;
         height: 200px;
