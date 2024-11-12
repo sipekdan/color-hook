@@ -8,6 +8,9 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
+        <div style="position: fixed; left: calc(50% - 313px); top: 22px;">
+            [JSON<input id="checkbox-use-model" type="checkbox" onclick="useJSON = !useJSON;" style="position: relative; top: 1px; cursor: pointer;" />]
+        </div>
         <h1>Color Naming and Model Training v1.1</h1>
         <div class="info-icon" onclick="toggleInfoBox()"> i
             <div class="info-box" style="cursor: default;">
@@ -263,8 +266,8 @@
         <input type="file" id="uploadFile" style="cursor: pointer" onchange="handleFileUpload(event)">
         <br>
         <h3 style="display: inline;">Download your updated model <a id="modelLength">(0, 0)</a>:</h3>
-        <button style="display: inline; margin-left: 10px;" onclick="downloadModel()">Download Model</button>
-        <button style="display: inline; margin-left: 10px;" onclick="downloadFullModel()">Download Full Model</button>
+        <button style="display: inline; margin-left: 10px;" onclick="useJSON ? downloadModelJSON() : downloadModel()">Download Model</button>
+        <button style="display: inline; margin-left: 10px;" onclick="useJSON ? downloadFullModelJSON() : downloadFullModel()">Download Full Model</button>
 
         <br>
         <h3 style="display: inline;">Pre-generated Models:</h3>
@@ -279,6 +282,7 @@
         let uploadedModel = [];  
         let currentColor = null;
         let tempModel = [];
+        let useJSON = false;
 
         let currentRGB = '';
         let currentHex = '';
@@ -648,7 +652,7 @@
         }
 
 
-        function handleFileUpload(event) {
+        function handleFileUpload2(event) {
 
             const file = event.target.files[0];
             if (!file || !file.name.toLowerCase().endsWith('.csv')) {
@@ -696,6 +700,77 @@
 
             reader.readAsText(file);
         }
+
+
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file || (!file.name.toLowerCase().endsWith('.csv') && !file.name.toLowerCase().endsWith('.json'))) {
+                alert("Please upload a valid CSV or JSON file.");
+                event.target.value = '';  
+                uploadedModel = [];  
+                displayColorHint(currentColor);
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const content = e.target.result;
+
+                if (file.name.toLowerCase().endsWith('.csv')) {
+                    // Parse as CSV
+                    const parsedData = parseCSV(content);
+                    const header = content.split('\n')[0].split(',').map(cell => cell.trim());
+                    if (header[0].toLowerCase() != 'red' || 
+                        header[1].toLowerCase() != 'green' ||
+                        header[2].toLowerCase() != 'blue' ||
+                        !header[3].toLowerCase().startsWith('name')) {
+                            alert("Please upload a valid CSV file with header: Red,Green,Blue,Name");
+                            event.target.value = '';  
+                            uploadedModel = [];  
+                            displayColorHint(currentColor);
+                            return;
+                    }
+
+                    if (parsedData.length === 0) {
+                        event.target.value = '';  
+                        uploadedModel = [];  
+                        alert("Model not loaded successfully! The uploaded CSV file may be empty or invalid.");
+                        return;
+                    } else {
+                        uploadedModel = parsedData;
+                        alert("CSV model uploaded successfully!");
+                    }
+
+                } else if (file.name.toLowerCase().endsWith('.json')) {
+                    // Parse as JSON
+                    try {
+                        const parsedData = JSON.parse(content);
+                        if (!Array.isArray(parsedData) || parsedData.length === 0 || !parsedData[0].hasOwnProperty('r') || !parsedData[0].hasOwnProperty('g') || !parsedData[0].hasOwnProperty('b') || !parsedData[0].hasOwnProperty('name')) {
+                            alert("Please upload a valid JSON file. The JSON should contain an array of objects with 'r', 'g', 'b', and 'name' properties.");
+                            event.target.value = '';  
+                            uploadedModel = [];  
+                            displayColorHint(currentColor);
+                            return;
+                        }
+                        uploadedModel = parsedData;
+                        alert("JSON model uploaded successfully!");
+                    } catch (error) {
+                        alert("Failed to parse JSON file. Please upload a valid JSON file.");
+                        event.target.value = '';  
+                        uploadedModel = [];  
+                        displayColorHint(currentColor);
+                        return;
+                    }
+                }
+
+                document.getElementById('checkbox-use-model').checked = false;
+                displayColorHint(currentColor);
+            };
+
+            reader.readAsText(file);
+        }
+
 
         function parseCSV(csvContent) {
             const rows = csvContent.split('\n');
@@ -965,6 +1040,58 @@
             a.click();
             URL.revokeObjectURL(url);
         }
+
+
+        // Json download
+        function downloadModelJSON() {
+            if (colorsData.length === 0) {
+                alert("No data to download.");
+                return;
+            }
+
+            // Format current date as YYYY-MM-DD_HH-MM-SS
+            const date = new Date();
+            const dateString = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}_${date.getHours().toString().padStart(2, '0')}-${date.getMinutes().toString().padStart(2, '0')}-${date.getSeconds().toString().padStart(2, '0')}`;
+
+            // Convert colorsData to JSON format
+            const jsonContent = JSON.stringify(colorsData, null, 2); // Pretty-print JSON with 2 spaces
+
+            const blob = new Blob([jsonContent], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `color_model_${dateString}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadFullModelJSON() {
+            if (uploadedModel.length === 0 && colorsData.length === 0) {
+                alert("No data to download. No model uploaded or colors data available.");
+                return;
+            }
+
+            // Format current date as YYYY-MM-DD_HH-MM-SS
+            const date = new Date();
+            const dateString = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}_${date.getHours().toString().padStart(2, '0')}-${date.getMinutes().toString().padStart(2, '0')}-${date.getSeconds().toString().padStart(2, '0')}`;
+
+            // Combine uploadedModel and colorsData
+            const fullModelData = [...uploadedModel, ...colorsData];
+
+            // Convert to JSON format
+            const jsonContent = JSON.stringify(fullModelData, null, 2); // Pretty-print with 2 spaces
+
+            // Create a Blob for the JSON content
+            const blob = new Blob([jsonContent], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `full_color_model_${dateString}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+
 
         function downloadFullModel() {
 
