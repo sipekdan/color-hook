@@ -6,6 +6,16 @@ body {
     overflow: hidden;
 }
 
+#jsonToggle {
+    position: fixed;
+    left: calc(50% - 313px); top: 22px;
+}
+
+.checkbox-use-json {
+    position: relative; 
+    top: 1px; 
+    cursor: pointer;
+}
 
 .color-box {
     width: 200px;
@@ -20,8 +30,10 @@ body {
         overflow: auto;
     }
 
-    .jsonToggle {
+    #jsonToggle {
         position: relative;
+        top: 0px;
+        left: 0px;
     }
     
     .color-box {
