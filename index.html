@@ -967,13 +967,25 @@
             const variations = [];
 
             let nOVars = numOfMutations; // User-defined number of mutations
-            let numberOfVariations = Math.max(1, nOVars + Math.round(Math.random() * 4 - 2)); // Ensure a reasonable number of variations
+            const randomnessInfluence = randomnessFactor / 100; // Convert to a 0-1 scale
+            const baseVariation = nOVars;
+
+            // Introduce some non-linear effects to create more complexity
+            const randomMultiplier = 1 + (Math.pow(Math.random(), 2) - 0.5) * 2 * randomnessInfluence; // Squared random value for higher extremes
+            const oscillatingEffect = Math.sin(Math.random() * Math.PI * 2) * randomnessInfluence; // Adds sinusoidal fluctuation
+
+            // Compute the number of variations with layered randomness and influence factors
+            let numberOfVariations = Math.max(
+                1, 
+                Math.round(baseVariation * randomMultiplier + oscillatingEffect * 3) // Adding a scaled sinusoidal variation
+            );
+            
+            // let numberOfVariations = Math.max(1, nOVars + Math.round(Math.random() * 4 - 2)); // Ensure a reasonable number of variations
             let upperLimit = maxChangeOffset; // Upper offset based on user input
             let lowerLimit = minChangeOffset; // Lower offset based on user input
 
             numberOfVariations = Math.max(1, numberOfVariations);
 
-            const randomnessInfluence = randomnessFactor / 100; // Convert to a 0-1 scale
 
             for (let i = 0; i < numberOfVariations; i++) {
                 let rOffset, gOffset, bOffset;
