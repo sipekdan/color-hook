@@ -262,7 +262,7 @@
         <h3 style="display: inline; margin: 0; vertical-align: middle;" >Upload your existing model:</h3>
         <input type="file" id="uploadFile" style="cursor: pointer" onchange="handleFileUpload(event)">
         <br>
-        <h3 style="display: inline;">Download your updated model <a id="modelLength">(0)</a>:</h3>
+        <h3 style="display: inline;">Download your updated model <a id="modelLength">(0, 0)</a>:</h3>
         <button style="display: inline; margin-left: 10px;" onclick="downloadModel()">Download Model</button>
         <button style="display: inline; margin-left: 10px;" onclick="downloadFullModel()">Download Full Model</button>
 
@@ -578,7 +578,7 @@
                 document.getElementById('lengthOfModel').innerHTML = `Closest Matches (${Math.min(7, model.length)-1}/${model.length})`;
             }
 
-            document.getElementById('modelLength').innerHTML = `(${model.length})`;
+            document.getElementById('modelLength').innerHTML = `(${colorsData.length}, ${uploadedModel.length})`;
 
             const closestColors = getClosestColors(model, color, 6+1); 
             closestColorsList.innerHTML = '';
