@@ -19,6 +19,10 @@ body {
     body {
         overflow: auto;
     }
+
+    .jsonToggle {
+        position: relative;
+    }
     
     .color-box {
         width: 200px;
