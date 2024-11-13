@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Color Training App</title>
-	<link rel="icon" href="data:image/x-icon;," type="image/x-icon">
+	    <link rel="icon" href="data:image/x-icon;," type="image/x-icon">
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
@@ -30,12 +30,8 @@
                 
                 <p>Uploaded models display colors predicted for the current input. "Download Model" downloads only your trained data (by your input), while "Download Full Model" includes both the uploaded model and your data.</p>
                 
-                <p>Here are some exceptions for colors:</p>
-                <ul>
-                <li>Fuchsia has the same color as Magenta.</li>
-                <li>Aqua has the same color code as Cyan.</li>
-                </ul>
-
+                <p>Here are some exceptions for colors: `fuchsia` has the same color as `magenta` and `aqua` has the same color code as `cyan`.</p>
+                
                 <p>Mutation settings let you further customize color variations. "Number of Mutations" sets how many variations are created, "Min/Max Range" defines the mutation range, "Type" includes/excludes certain colors, "Strategy" defines mutation behavior, and "Randomness Factor" controls the degree of color change.</p>
                 
                 <p><strong>Shortcuts (Box color):</strong> - <code>Ctrl + R</code> to copy RGB, <code>Ctrl + H</code> to copy HEX</p>
@@ -79,148 +75,7 @@
         <h3 style="display: inline; margin: 0; vertical-align: middle;">Enter Color Name?:</h3>
         <input autocomplete="off" type="text" id="colorName" placeholder="Enter color (e.g., blue/grey) for train" list="colorList" style="display: inline; margin: 0; vertical-align: middle;" onkeydown="handleKeyPress(event)">
 
-        <datalist id="colorList">
-            <option value="aliceblue">
-            <option value="antiquewhite">
-            <option value="aqua">
-            <option value="aquamarine">
-            <option value="azure">
-            <option value="beige">
-            <option value="bisque">
-            <option value="black">
-            <option value="blanchedalmond">
-            <option value="blue">
-            <option value="blueviolet">
-            <option value="brown">
-            <option value="burlywood">
-            <option value="cadetblue">
-            <option value="chartreuse">
-            <option value="chocolate">
-            <option value="coral">
-            <option value="cornflowerblue">
-            <option value="cornsilk">
-            <option value="crimson">
-            <option value="cyan">
-            <option value="darkblue">
-            <option value="darkcyan">
-            <option value="darkgoldenrod">
-            <option value="darkgray">
-            <option value="darkgreen">
-            <option value="darkkhaki">
-            <option value="darkmagenta">
-            <option value="darkolivegreen">
-            <option value="darkorange">
-            <option value="darkorchid">
-            <option value="darkred">
-            <option value="darksalmon">
-            <option value="darkseagreen">
-            <option value="darkslateblue">
-            <option value="darkslategray">
-            <option value="darkturquoise">
-            <option value="darkviolet">
-            <option value="deeppink">
-            <option value="deepskyblue">
-            <option value="dimgray">
-            <option value="dodgerblue">
-            <option value="firebrick">
-            <option value="floralwhite">
-            <option value="forestgreen">
-            <option value="fuchsia">
-            <option value="gainsboro">
-            <option value="ghostwhite">
-            <option value="gold">
-            <option value="goldenrod">
-            <option value="gray">
-            <option value="green">
-            <option value="greenyellow">
-            <option value="honeydew">
-            <option value="hotpink">
-            <option value="indianred">
-            <option value="indigo">
-            <option value="ivory">
-            <option value="khaki">
-            <option value="lavender">
-            <option value="lavenderblush">
-            <option value="lawngreen">
-            <option value="lemonchiffon">
-            <option value="lightblue">
-            <option value="lightcoral">
-            <option value="lightcyan">
-            <option value="lightgoldenrodyellow">
-            <option value="lightgray">
-            <option value="lightgreen">
-            <option value="lightpink">
-            <option value="lightsalmon">
-            <option value="lightseagreen">
-            <option value="lightskyblue">
-            <option value="lightslategray">
-            <option value="lightsteelblue">
-            <option value="lightyellow">
-            <option value="lime">
-            <option value="limegreen">
-            <option value="linen">
-            <option value="magenta">
-            <option value="maroon">
-            <option value="mediumaquamarine">
-            <option value="mediumblue">
-            <option value="mediumorchid">
-            <option value="mediumpurple">
-            <option value="mediumseagreen">
-            <option value="mediumslateblue">
-            <option value="mediumspringgreen">
-            <option value="mediumturquoise">
-            <option value="mediumvioletred">
-            <option value="midnightblue">
-            <option value="mintcream">
-            <option value="mistyrose">
-            <option value="moccasin">
-            <option value="navajowhite">
-            <option value="navy">
-            <option value="oldlace">
-            <option value="olive">
-            <option value="olivedrab">
-            <option value="orange">
-            <option value="orangered">
-            <option value="orchid">
-            <option value="palegoldenrod">
-            <option value="palegreen">
-            <option value="paleturquoise">
-            <option value="palevioletred">
-            <option value="papayawhip">
-            <option value="peachpuff">
-            <option value="peru">
-            <option value="pink">
-            <option value="plum">
-            <option value="powderblue">
-            <option value="purple">
-            <option value="rebeccapurple">
-            <option value="red">
-            <option value="rosybrown">
-            <option value="royalblue">
-            <option value="saddlebrown">
-            <option value="salmon">
-            <option value="sandybrown">
-            <option value="seashell">
-            <option value="sienna">
-            <option value="silver">
-            <option value="skyblue">
-            <option value="slateblue">
-            <option value="slategray">
-            <option value="snow">
-            <option value="springgreen">
-            <option value="steelblue">
-            <option value="tan">
-            <option value="teal">
-            <option value="thistle">
-            <option value="tomato">
-            <option value="turquoise">
-            <option value="violet">
-            <option value="wheat">
-            <option value="white">
-            <option value="whitesmoke">
-            <option value="yellow">
-            <option value="yellowgreen">
-        </datalist>
+        <datalist id="colorList"></datalist>
 
         <button onclick="submitColor()">Submit Color</button><button onclick="skipColor()">Skip Color</button>
         <br>
@@ -297,6 +152,7 @@
         let mutationStrategy = 'uniform';
         let randomnessFactor = 50;
 
+
         fetch('models/color_dataset.csv')
             .then(response => response.text()) // Get the CSV content as text
             .then(content => {
@@ -307,6 +163,55 @@
             .catch(error => {
                 console.error('Error loading the CSV file:', error);
             });
+
+        let wordsAdded = 0;
+        const dictionary = [
+            "aliceblue", "antiquewhite", "aqua", "aquamarine", "azure", "beige", "bisque", "black", 
+            "blanchedalmond", "blue", "blueviolet", "brown", "burlywood", "cadetblue", "chartreuse", 
+            "chocolate", "coral", "cornflowerblue", "cornsilk", "crimson", "cyan", "darkblue", "darkcyan", 
+            "darkgoldenrod", "darkgray", "darkgreen", "darkkhaki", "darkmagenta", "darkolivegreen", 
+            "darkorange", "darkorchid", "darkred", "darksalmon", "darkseagreen", "darkslateblue", 
+            "darkslategray", "darkturquoise", "darkviolet", "deeppink", "deepskyblue", "dimgray", 
+            "dodgerblue", "firebrick", "floralwhite", "forestgreen", "fuchsia", "gainsboro", "ghostwhite", 
+            "gold", "goldenrod", "gray", "green", "greenyellow", "honeydew", "hotpink", "indianred", 
+            "indigo", "ivory", "khaki", "lavender", "lavenderblush", "lawngreen", "lemonchiffon", 
+            "lightblue", "lightcoral", "lightcyan", "lightgoldenrodyellow", "lightgray", "lightgreen", 
+            "lightpink", "lightsalmon", "lightseagreen", "lightskyblue", "lightslategray", "lightsteelblue", 
+            "lightyellow", "lime", "limegreen", "linen", "magenta", "maroon", "mediumaquamarine", 
+            "mediumblue", "mediumorchid", "mediumpurple", "mediumseagreen", "mediumslateblue", 
+            "mediumspringgreen", "mediumturquoise", "mediumvioletred", "midnightblue", "mintcream", 
+            "mistyrose", "moccasin", "navajowhite", "navy", "oldlace", "olive", "olivedrab", "orange", 
+            "orangered", "orchid", "palegoldenrod", "palegreen", "paleturquoise", "palevioletred", 
+            "papayawhip", "peachpuff", "peru", "pink", "plum", "powderblue", "purple", "rebeccapurple", 
+            "red", "rosybrown", "royalblue", "saddlebrown", "salmon", "sandybrown", "seashell", "sienna", 
+            "silver", "skyblue", "slateblue", "slategray", "snow", "springgreen", "steelblue", "tan", "teal", 
+            "thistle", "tomato", "turquoise", "violet", "wheat", "white", "whitesmoke", "yellow", "yellowgreen"
+        ];
+
+        // Get the datalist element by its ID
+        const colorList = document.getElementById('colorList');
+
+        // Loop through the dictionary array and create an <option> for each color
+        dictionary.forEach(color => {
+            const option = document.createElement('option');
+            option.value = color;
+            colorList.appendChild(option);
+        });
+
+        function updateColorList() {
+            // Get the datalist element by its ID
+            const colorList = document.getElementById('colorList');
+
+            // Clear any existing options to avoid duplicates
+            colorList.innerHTML = '';
+
+            // Loop through the dictionary array and create an <option> for each color
+            dictionary.forEach(color => {
+                const option = document.createElement('option');
+                option.value = color;
+                colorList.appendChild(option);
+            });
+        }
 
         const numOfMutationsInput = document.getElementById('numOfMutationsInput');
         const minChangeOffsetInput = document.getElementById('minChangeOffsetInput');
@@ -759,11 +664,29 @@
                     }
                 }
 
+                // After successful upload, update dictionary with colors from uploaded model
+                updateDictionaryWithModelColors();
+
                 document.getElementById('checkbox-use-model').checked = false;
                 displayColorHint(currentColor);
             };
 
             reader.readAsText(file);
+        }
+
+
+        // Function to add color names from the uploaded model to the dictionary array
+        function updateDictionaryWithModelColors() {
+            uploadedModel.forEach(color => {
+                if (!dictionary.includes(color.name)) {  // Check if color name is not already in dictionary
+                    dictionary.push(color.name);  // Add color name if it's not already present
+                }
+            });
+            console.log("Dictionary updated with color names from the uploaded model.");
+            
+            // Call this function to update the color list whenever the dictionary is modified
+            updateColorList();
+
         }
 
 
@@ -796,9 +719,30 @@
                 return;
             }
 
+            // Check if the color is in the dictionary
+            if (!dictionary.includes(colorNameInput.toLowerCase())) {
+                // If not in the dictionary, ask the user if they want to add it
+                const userResponse = confirm(`You entered unknow color name: "${colorNameInput}". Do you want to edit it?`);
+                if (userResponse) {
+                    // alert(`Color "${colorNameInput}" not added.`);
+                    return;
+                } else {
+                    // Add the color to the dictionary
+                    dictionary.push(colorNameInput.toLowerCase());
+
+                    // Also, add the new color to the datalist options
+                    const newOption = document.createElement('option');
+                    newOption.value = colorNameInput.toLowerCase();
+                    colorList.appendChild(newOption);
+                    
+                    wordsAdded++;
+                    // alert(`Color "${colorNameInput}" added to the dictionary!`);
+                }
+            }
+
             // console.log(`Added: ${colorNameInput}`);
-            handleColorNames(colorNameInput);
             document.getElementById('colorName').value = '';
+            handleColorNames(colorNameInput);
             displayColor(generateRandomColor());
         }
 
@@ -933,6 +877,7 @@
         }
 
         function handleColorNames(colorNameInput) {
+
             const colorNames = colorNameInput.split('/').map(name => name.trim());
 
             colorNames.forEach(colorName => {
@@ -985,7 +930,7 @@
             let lowerLimit = minChangeOffset; // Lower offset based on user input
 
             numberOfVariations = Math.max(1, numberOfVariations);
-
+            console.log(numberOfVariations);
 
             for (let i = 0; i < numberOfVariations; i++) {
                 let rOffset, gOffset, bOffset;
@@ -1023,8 +968,8 @@
             return variations;
         }
 
+        // Function to download the color model as CSV
         function downloadModel() {
-
             if (colorsData.length === 0) {
                 alert("No data to download.");
                 return;
@@ -1034,13 +979,17 @@
             const date = new Date();
             const dateString = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}_${date.getHours().toString().padStart(2, '0')}-${date.getMinutes().toString().padStart(2, '0')}-${date.getSeconds().toString().padStart(2, '0')}`;
 
+            // Prepare CSV content
             let csvContent = "Red,Green,Blue,Name\n";
             colorsData.forEach(row => {
                 csvContent += `${row.r},${row.g},${row.b},${row.name}\n`;
             });
 
+            // Create a Blob for CSV content
             const blob = new Blob([csvContent], { type: 'text/csv' });
             const url = URL.createObjectURL(blob);
+
+            // Trigger download
             const a = document.createElement('a');
             a.href = url;
             a.download = `color_model_${dateString}.csv`;
@@ -1048,8 +997,7 @@
             URL.revokeObjectURL(url);
         }
 
-
-        // Json download
+        // Function to download color model data as JSON
         function downloadModelJSON() {
             if (colorsData.length === 0) {
                 alert("No data to download.");
@@ -1063,8 +1011,11 @@
             // Convert colorsData to JSON format
             const jsonContent = JSON.stringify(colorsData, null, 2); // Pretty-print JSON with 2 spaces
 
+            // Create a Blob for JSON content
             const blob = new Blob([jsonContent], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
+
+            // Trigger download
             const a = document.createElement('a');
             a.href = url;
             a.download = `color_model_${dateString}.json`;
@@ -1072,6 +1023,7 @@
             URL.revokeObjectURL(url);
         }
 
+        // Function to download both uploaded model and colors data as combined JSON
         function downloadFullModelJSON() {
             if (uploadedModel.length === 0 && colorsData.length === 0) {
                 alert("No data to download. No model uploaded or colors data available.");
@@ -1088,9 +1040,11 @@
             // Convert to JSON format
             const jsonContent = JSON.stringify(fullModelData, null, 2); // Pretty-print with 2 spaces
 
-            // Create a Blob for the JSON content
+            // Create a Blob for JSON content
             const blob = new Blob([jsonContent], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
+
+            // Trigger download
             const a = document.createElement('a');
             a.href = url;
             a.download = `full_color_model_${dateString}.json`;
@@ -1098,8 +1052,7 @@
             URL.revokeObjectURL(url);
         }
 
-
-
+        // Function to download both uploaded model and colors data as combined CSV
         function downloadFullModel() {
 
             if (uploadedModel.length === 0) {
@@ -1111,6 +1064,7 @@
             const date = new Date();
             const dateString = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}_${date.getHours().toString().padStart(2, '0')}-${date.getMinutes().toString().padStart(2, '0')}-${date.getSeconds().toString().padStart(2, '0')}`;
 
+            // Prepare CSV content
             let csvContent = "Red,Green,Blue,Name\n";
             uploadedModel.forEach(row => {
                 csvContent += `${row.r},${row.g},${row.b},${row.name}\n`;
@@ -1120,15 +1074,17 @@
                 csvContent += `${row.r},${row.g},${row.b},${row.name}\n`;
             });
 
+            // Create a Blob for CSV content
             const blob = new Blob([csvContent], { type: 'text/csv' });
             const url = URL.createObjectURL(blob);
+
+            // Trigger download
             const a = document.createElement('a');
             a.href = url;
             a.download = `full_color_model_${dateString}.csv`;
             a.click();
             URL.revokeObjectURL(url);
         }
-
 
         function toggleInfoBox() {
             var infoBox = document.querySelector('.info-box');
